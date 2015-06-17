@@ -1,49 +1,17 @@
-global.Config = getConfig();
+global.Config = {
+    port : 8380,
+    maxAge : APP_DEBUG ? 0 : 365 * 24 * 60 * 60,
 
-function getConfig(){
-    
-	var app = ROOT_PATH + '/app';
-	var controller = app + '/controller';
-	var view = app + '/view';
-	var model = app + '/model';
+    db : {
+       
+    },
 
-    var res_prefix = '/res';
-	var res = ROOT_PATH + '/res';
-	var js = res + '/js';
-	var css = res + '/css';
-	var img = res + '/img';
+    groups : ['home','admin'],
+    defGroup : 'home',
 
-
-    if(APP_DEBUG){
-        var maxAge = 0;
-    }else{
-        var maxAge = 365 * 24 * 60 * 60;
-    }
-
-    return {
-        port : 8380,
-        maxAge : maxAge,
-        secret : 8888,
-
-        db : {
-            host : '',
-            port : 27017,
-            database : ''
-        },
-
-        groups : ['home','admin'],
-        def_group : 'home',
-
-    	root : ROOT_PATH,
-    	app : app,
-    	model : model,
-    	view : view,
-    	controller : controller,
-    	res : res,
-        res_prefix : res_prefix,
-    	js : js,
-    	css : css,
-    	img : img
-    }
+    model : ROOT_PATH + '/app/model',
+    view : ROOT_PATH + '/app/view',
+    controller : ROOT_PATH + '/app/controller',
+    res : ROOT_PATH + '/res';
 }
 

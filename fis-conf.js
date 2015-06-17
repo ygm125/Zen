@@ -1,4 +1,3 @@
-
 fis.config.merge({
 	project : { exclude : /^\/(node_modules|other)\/.*/i },
     roadmap : {
@@ -25,9 +24,7 @@ fis.config.merge({
 fis.config.set('settings.preprocessor.combo', {
     baseUrl: "/res/js",
     paths: {
-        // "page":"./res/js/page",
-        // "common": "res/js/common",
-        // "component": "res/js/component"
+
     }
 });
 
@@ -41,8 +38,6 @@ fis.config.set('modules.preprocessor', {
 });
 
 fis.config.set('modules.postpackager','combo');
-
-
 
 
 

@@ -53,9 +53,8 @@ function route (app) {
 	app.use(function* pageNotFound(next){
 		yield* next;
 		if (404 != this.status) return;
-		var ctrol = require(Config.controller + '/home/404');
-		ctrol = new ctrol(this,render);
-		yield* ctrol.index.call(ctrol);
+		this.status = 404;
+	  	this.body = '404';
 	});
 }
 

@@ -20,7 +20,7 @@ global.parseRoute = function(app){
     }
 
     if(Config.groups.indexOf(ctrolPath[0]) == -1){
-        ctrolPath.unshift(Config.def_group);
+        ctrolPath.unshift(Config.defGroup);
     }
 
     ctrolPath = [Config.controller,ctrolPath,ctrolName].join('/');
