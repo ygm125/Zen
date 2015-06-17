@@ -1,0 +1,6 @@
+{
+  	"ext": "html js",
+	"execMap": {
+		"js": "node --harmony"
+	}
+}
