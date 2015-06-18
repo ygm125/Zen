@@ -12,6 +12,6 @@ global.Config = {
     model : ROOT_PATH + '/app/model',
     view : ROOT_PATH + '/app/view',
     controller : ROOT_PATH + '/app/controller',
-    res : ROOT_PATH + '/res';
+    res : ROOT_PATH + '/res'
 }
 

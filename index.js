@@ -5,8 +5,7 @@ var cpus = require( 'os' ).cpus().length;
 
 cluster.setupMaster({
     exec : './server.js',
-    args : [],
-    silent : false
+    args : []
 });
 
 for(var i = cpus ; i--;){
