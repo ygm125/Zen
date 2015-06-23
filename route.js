@@ -1,9 +1,42 @@
 var fs = require('fs');
+var url = require('url');
 var views = require('co-views');
 
 var render = views(Config.view, {
     map: { html: 'swig' }
 });
+
+function parseRoute(app){
+
+    var urlInfo = url.parse('//' + app.req.headers.host + app.req.url, true, true);       
+
+    var paths = urlInfo.pathname.slice(1).split('/');
+
+    var ctrolPath = paths.slice(0,-3);
+
+    var execFile = paths.slice(-3);
+
+    var ctrolName = (execFile[0] || 'index') + '.js';
+    var action = execFile[1];
+    var param = execFile[2];
+
+    if(execFile.length < 2){
+        param = action;
+        action = 'index';
+    }
+
+    if(Config.groups.indexOf(ctrolPath[0]) == -1){
+        ctrolPath.unshift(Config.defGroup);
+    }
+
+    ctrolPath = [Config.controller,ctrolPath,ctrolName].join('/');
+
+    return {
+        ctrol : ctrolPath,
+        action : action,
+        param : param       
+    }
+}
 
 function route (app) {
 	app.use(function* pageRoute(next){
