@@ -13,7 +13,8 @@
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-babel": "^5.1.0",
-    "gulp-es6-module-transpiler": "^0.2.1"
+    "gulp-es6-module-transpiler": "^0.2.1",
+    "gulp-if": "^1.2.5"
   },
   "license": "MIT",
   "engines": {
