@@ -33,6 +33,6 @@ app.on( 'error', function( err ) {
 
 app.listen( Config.port );
 
-console.log('Server running at http://127.0.0.1:' + Config.port);
+console.log('server running at http://127.0.0.1:' + Config.port);
 
 
