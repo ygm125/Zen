@@ -1,10 +1,9 @@
 {
   "name": "koa_app",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.0.2",
+  "description": "a node web framework",
   "dependencies": {
     "co-views": "~0.2.0",
-    "gulp": "^3.9.0",
     "koa": "~0.14.0",
     "koa-bodyparser": "~1.3.0",
     "koa-response-time": "~1.0.2",
@@ -17,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://gitlab.fexot.meiliworks.com/newroads/silkworm.git"
+    "url": "https://github.com/ygm125/silkworm"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
