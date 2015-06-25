@@ -1,0 +1,6 @@
+{
+  "lib/jquery.js": "lib/jquery-42d1f3671d.js",
+  "page/index/index.js": "page/index/index-135b8055da.js",
+  "page/index/point.js": "page/index/point-4ca920933a.js",
+  "page/index/segment.js": "page/index/segment-9bb998edce.js"
+}
