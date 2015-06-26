@@ -1,5 +1,6 @@
 var crypto = require('crypto');
 var fs = require('fs');
+var path = require("path");
 
 global.md5 = function (str) {
     var md5sum = crypto.createHash('md5');
@@ -70,3 +71,48 @@ global.random = function(len){
     }
     return len;
 }
+
+global.isWindows = process.platform === 'win32';
+
+function listenToChange (file){
+    file = path.resolve(file)
+    function onChg(prev,now) {
+      delete require.cache[file];
+    } 
+    if (isWindows){
+        fs.watch(file ,{ persistent: true, interval: Config.watchFiles } , onChg);
+    }else{
+        fs.watchFile(file ,{ persistent: true, interval: Config.watchFiles } , onChg);
+    }
+}
+
+function mapDir(dir,ext) {
+    fs.readdir (dir , function(err , files){
+        if (err) return;
+        if (ext && !files.indexOf(ext) ) return;
+        files.forEach(function(file){
+           file = dir + '/' + file;
+           fs.lstat(file , function(err, stats){
+                if (err) return;
+                if (stats.isDirectory() ) {
+                    mapDir(file , ext);
+                }else if (stats.isFile() ){
+                    listenToChange(file);
+                }
+           });
+       });
+   }); 
+}  
+
+global.watchFiles = function(dir,ext){
+    if(isString(dir)){
+        dir = [dir];
+    }
+    dir.forEach(function(dirItem){
+       mapDir(dirItem,ext);
+    })
+}
+
+
+
+

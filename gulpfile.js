@@ -10,6 +10,8 @@ var less = require('gulp-less');
 var lazypipe = require('lazypipe');
 var rename = require("gulp-rename");
 var del = require('del');
+var imagemin = require('gulp-imagemin');
+var browserSync = require('browser-sync').create();
 
 var paths = {
     app : {
@@ -53,6 +55,11 @@ var ifLess = function(file){
         return true;
     }
 }
+var ifImg = function(file){
+    if(/\/img\//.test(file.path)){
+        return true;
+    }
+}
 
 var jsTask = lazypipe().pipe(uglify);
 
@@ -72,6 +79,7 @@ gulp.task('res', function () {
         .pipe(gulpif(ifJsBundle,jsBundleTask()))
         // .pipe(gulpif(ifJs,jsTask()))
         .pipe(gulpif(ifLess,lessTask()))
+        .pipe(gulpif(ifImg,imagemin({optimizationLevel: 5})))
         .pipe(rename(function(path){
             path.dirname = path.dirname.replace('less','css');
         }))
@@ -98,16 +106,40 @@ gulp.task('view', function () {
 
     return gulp.src(paths.view.src)
     .pipe(revReplace({
-        manifest: manifest
+        manifest: manifest,
+        replaceInExtensions : ['.js', '.css', '.html','.less']
     }))
     .pipe(gulp.dest(paths.view.build));
 });
+
+// gulp.task('img', function () {
+//     var manifest = gulp.src(paths.revManifest + "rev-manifest.json");
+
+//     return gulp.src(paths.res.src)
+//     .pipe(revReplace({
+//         manifest: manifest,
+//         replaceInExtensions : ['.js', '.css', '.less']
+//     }))
+//     .pipe(gulp.dest(paths.res.build));
+// });
 
 gulp.task('watch', function() {
     gulp.watch(paths.app.src, ['app']);
     gulp.watch(paths.view.src, ['view']);
     gulp.watch(paths.res.src, ['revRes']);
 });
+
+// gulp.task('browser-sync', function() {
+//     browserSync.init({
+//         proxy: "http://localhost:8380/"
+//     });
+
+//     gulp.watch("app/**/*.html").on('change', function(){
+//         setTimeout(function(){
+//             browserSync.reload();
+//         },1010);
+//     });
+// });
 
 gulp.task('default', ['watch']);
 
