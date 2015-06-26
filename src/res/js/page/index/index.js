@@ -1,5 +1,5 @@
-import { Point } from './point';
-import { Segment } from './segment';
+import { Menu } from './menu';
 
-var start = new Point(0, 0);
-var end = new Segment(4, 5);
+var start = new Menu(0, 0);
+
+start.x;

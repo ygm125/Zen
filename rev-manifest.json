@@ -1,6 +1,7 @@
 {
-  "lib/jquery.js": "lib/jquery-42d1f3671d.js",
-  "page/index/index.js": "page/index/index-135b8055da.js",
-  "page/index/point.js": "page/index/point-4ca920933a.js",
-  "page/index/segment.js": "page/index/segment-9bb998edce.js"
+  "js/lib/jquery.js": "js/lib/jquery-42d1f3671d.js",
+  "css/common/base.css": "css/common/base-eb49103656.css",
+  "js/page/index/index.js": "js/page/index/index-f00a84cc63.js",
+  "css/page/index.css": "css/page/index-ed263c09e4.css",
+  "js/page/index/menu.js": "js/page/index/menu-374c75dc5e.js"
 }

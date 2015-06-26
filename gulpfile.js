@@ -6,56 +6,82 @@ var transpile  = require('gulp-es6-module-transpiler');
 var uglify = require('gulp-uglify');
 var rev = require('gulp-rev');
 var revReplace = require("gulp-rev-replace");
+var less = require('gulp-less');
+var lazypipe = require('lazypipe');
+var rename = require("gulp-rename");
 
 var paths = {
-	app : {
-		src : 'src/app/**',
-		build : 'app/'
-	},
+    app : {
+        src : 'src/app/**',
+        build : 'app'
+    },
     view : {
         src : 'src/app/view/**',
-        build : 'app/view'
+        build : 'src/app/view'
     },
-    scripts : {
+    res : {
+        src : 'src/res/**',
+        build : 'res'
+    },
+    js : {
         src : 'src/res/js/**',
         build : 'res/js'
+    },
+    less : {
+        src : 'src/res/less/**',
+        build : 'res/css'
     },
     revManifest : './'
 }
 
-gulp.task('buildApp', function () {
-    return gulp.src(paths.app.src)
-        .pipe(gulpif(function(file){
-            if(/\.js$/.test(file.path)){
-                return true;
-            }
-        },babel({
-            "blacklist": ["regenerator"]
-        })))
-        .pipe(gulp.dest(paths.app.build));
-});
+var ifJsExt = function(file){
+    if(/\.js$/.test(file.path)){
+        return true;
+    }
+}
+var ifJs = function(file){
+    if(/\/js\/page\//.test(file.path)){
+        return false;
+    }
+    if(/\/js\//.test(file.path)){
+        return true;
+    }
+}
+var ifJsBundle = function(file){
+    if(/\/js\/page\//.test(file.path)){
+        return true;
+    }
+}
+var ifLess = function(file){
+    if(/\/less\//.test(file.path)){
+        return true;
+    }
+}
 
+var jsTask = lazypipe().pipe(uglify);
 
-gulp.task('buildScripts', function (a,b,c) {
-    return gulp.src(paths.scripts.src)
-        // .pipe(sourcemaps.init())
-        .pipe(gulpif(function(file){
-            if(/\/page\//.test(file.path)){
-                return true;
-            }
-        },transpile({
-            formatter: 'bundle',
-            basePath : __dirname + '/src/res/js'
-        })))
-        // .pipe(uglify())
-        // .pipe(sourcemaps.write('./'))
+var jsBundleTask= lazypipe().pipe(transpile,{
+    formatter: 'bundle',
+    basePath : __dirname + '/src/res/'
+});//.pipe(jsTask);
+
+var lessTask = lazypipe().pipe(less);
+
+gulp.task('res', function () {
+    return gulp.src(paths.res.src)
+        .pipe(gulpif(ifJsBundle,jsBundleTask()))
+        // .pipe(gulpif(ifJs,jsTask()))
+        .pipe(gulpif(ifLess,lessTask()))
+        .pipe(rename(function(path){
+            path.dirname = path.dirname.replace('less','css');
+        }))
         .pipe(rev())
-        .pipe(gulp.dest(paths.scripts.build))
+        .pipe(gulp.dest(paths.res.build))
         .pipe(rev.manifest())
         .pipe(gulp.dest(paths.revManifest))
 });
 
-gulp.task("revReplaceScripts", ["buildScripts"], function(){
+gulp.task("revRes", ["res"], function(){
   var manifest = gulp.src(paths.revManifest + "rev-manifest.json");
 
   return gulp.src(paths.view.src)
@@ -63,10 +89,17 @@ gulp.task("revReplaceScripts", ["buildScripts"], function(){
     .pipe(gulp.dest(paths.view.build));
 });
 
+gulp.task('app', function () {
+    return gulp.src(paths.app.src)
+        .pipe(gulpif(ifJsExt,babel({
+            "blacklist": ["regenerator"]
+        })))
+        .pipe(gulp.dest(paths.app.build));
+});
 
 gulp.task('watch', function() {
-  	gulp.watch(paths.app.src, ['buildApp']);
-    gulp.watch(paths.scripts.src, ['revReplaceScripts']);
+    gulp.watch(paths.app.src, ['app']);
+    gulp.watch(paths.res.src, ['revRes']);
 });
 
 gulp.task('default', ['watch']);
