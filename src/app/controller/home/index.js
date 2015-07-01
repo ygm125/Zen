@@ -6,7 +6,7 @@ class index extends base{
 
 		this.assign( 'mockdata', function( next ) {
             setTimeout(function(){
-            	next(null,'silkworm');
+            	next(null,'zen');
             },500);
         } );
 
