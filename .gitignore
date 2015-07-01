@@ -31,11 +31,12 @@ node_modules
 .idea
 
 .DS_Store
-other/
 
+/other
+/app
+/res
 rev-manifest.json
-app/
-res/
+
 
 
 
