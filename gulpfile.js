@@ -13,6 +13,8 @@ var del = require('del');
 var imagemin = require('gulp-imagemin');
 var browserSync = require('browser-sync').create();
 
+var exec = require( 'child_process' ).exec;
+
 const PROXYURI = 'http://localhost:8380/';
 
 var paths = {
@@ -141,5 +143,19 @@ gulp.task('watch', function() {
     gulp.watch(paths.res.src, ['revRes']);
 });
 
-gulp.task('default', ['watch','browser-sync']);
+gulp.task('init', ['app','view','revRes']);
+
+gulp.task('server', function(){
+    var handle = exec('npm start', function(err) {
+        if(err) console.log(err)
+    });
+
+    handle.stdout.on('data',function(data){
+        console.log(data);
+    });
+});
+
+gulp.task('start', ['watch','browser-sync']);
+
+// gulp.task('default', ['app','view','revRes','watch','browser-sync']);
 
