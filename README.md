@@ -2,7 +2,7 @@
 
 **Web framework based on KOA**
 
-## 安装
+## Install
 
 ```js
 git clone https://github.com/ygm125/Zen.git
@@ -12,7 +12,7 @@ gulp server
 gulp start
 ```
 
-## 说明
+## Introduction
 
 - src为需要编译的源码目录
 - controller使用es6语法
@@ -23,4 +23,10 @@ gulp start
 - 资源修改自动reload
 
 ## 问题
+目标 co-views ==》co-render ==> consolidate.js
+缓存参数设置丢失，目前人工hack
+exports.swig.render增加如下判断
+if(!options.cache){
+  engine.setDefaults({cache:false});
+}
 
