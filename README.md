@@ -22,11 +22,17 @@ gulp start
 - 引用资源md5更新
 - 资源修改自动reload
 
-## 问题
+## Issue
+
 目标 co-views ==》co-render ==> consolidate.js
+
 缓存参数设置丢失，目前人工hack
+
 exports.swig.render增加如下判断
+
+```js
 if(!options.cache){
   engine.setDefaults({cache:false});
 }
+```
 
