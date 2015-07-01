@@ -3,7 +3,8 @@ var url = require('url');
 var views = require('co-views');
 
 var render = views(Config.view, {
-    map: { html: 'swig' }
+    map: { html: 'swig' },
+    cache : Config.viewCache
 });
 
 function parseRoute(app){

@@ -36,5 +36,5 @@ app.listen( Config.port );
 console.log('server running at http://127.0.0.1:' + Config.port);
 
 if(Config.watchFiles){
-    watchFiles(Config.app);
+    watchFiles([Config.model,Config.controller]);
 }

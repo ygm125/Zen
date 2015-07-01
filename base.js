@@ -77,7 +77,7 @@ global.isWindows = process.platform === 'win32';
 function listenToChange (file){
     file = path.resolve(file)
     function onChg(prev,now) {
-      delete require.cache[file];
+      require.cache[file] = null;
     } 
     if (isWindows){
         fs.watch(file ,{ persistent: true, interval: Config.watchFiles } , onChg);

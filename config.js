@@ -2,6 +2,7 @@ global.Config = {
     port : 8380,
     maxAge : APP_DEBUG ? 0 : 365 * 24 * 60 * 60,
     watchFiles : APP_DEBUG ? 1000 : 0,
+    viewCache : APP_DEBUG ? false : true,
 
     db : {
        

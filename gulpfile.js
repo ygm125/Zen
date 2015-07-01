@@ -13,6 +13,8 @@ var del = require('del');
 var imagemin = require('gulp-imagemin');
 var browserSync = require('browser-sync').create();
 
+const PROXYURI = 'http://localhost:8380/';
+
 var paths = {
     app : {
         src : 'src/app/**',
@@ -32,8 +34,10 @@ var paths = {
     },
     less : {
         src : 'src/res/less/**',
+        buildSrc : 'res/css/**',
         build : 'res/css'
     },
+    watchReload : ['app/**/*.html','res/js/**','res/css/**'],
     revManifest : './'
 }
 
@@ -70,8 +74,27 @@ var jsBundleTask= lazypipe().pipe(transpile,{
 
 var lessTask = lazypipe().pipe(less);
 
+function replaceManifest(src,dest){
+    var manifest = gulp.src(paths.revManifest + "rev-manifest.json");
+
+    return gulp.src(src)
+    .pipe(revReplace({
+        manifest: manifest,
+        replaceInExtensions : ['.js', '.css', '.html','.less']
+    }))
+    .pipe(gulp.dest(dest));
+}
+
 gulp.task('clean', function(cb) {
   del([paths.res.build], cb);
+});
+
+gulp.task('app', function () {
+    return gulp.src([paths.app.src,'!'+paths.view.src])
+        .pipe(babel({
+            "blacklist": ["regenerator"]
+        }))
+        .pipe(gulp.dest(paths.app.build));
 });
 
 gulp.task('res', function () {
@@ -89,39 +112,28 @@ gulp.task('res', function () {
         .pipe(gulp.dest(paths.revManifest))
 });
 
+gulp.task('view', function () {
+    return replaceManifest(paths.view.src,paths.view.build);
+});
+
+gulp.task('image', function () {
+    return replaceManifest(paths.less.buildSrc, paths.less.build);
+});
+
 gulp.task("revRes", ["res"], function(){
     gulp.run('view');
+    gulp.run('image');
 });
 
-gulp.task('app', function () {
-    return gulp.src([paths.app.src,'!'+paths.view.src])
-        .pipe(babel({
-            "blacklist": ["regenerator"]
-        }))
-        .pipe(gulp.dest(paths.app.build));
+gulp.task('browser-sync', function() {
+    browserSync.init({
+        proxy: PROXYURI
+    });
+
+    gulp.watch(paths.watchReload).on('change', function(){
+        browserSync.reload();
+    });
 });
-
-gulp.task('view', function () {
-    var manifest = gulp.src(paths.revManifest + "rev-manifest.json");
-
-    return gulp.src(paths.view.src)
-    .pipe(revReplace({
-        manifest: manifest,
-        replaceInExtensions : ['.js', '.css', '.html','.less']
-    }))
-    .pipe(gulp.dest(paths.view.build));
-});
-
-// gulp.task('img', function () {
-//     var manifest = gulp.src(paths.revManifest + "rev-manifest.json");
-
-//     return gulp.src(paths.res.src)
-//     .pipe(revReplace({
-//         manifest: manifest,
-//         replaceInExtensions : ['.js', '.css', '.less']
-//     }))
-//     .pipe(gulp.dest(paths.res.build));
-// });
 
 gulp.task('watch', function() {
     gulp.watch(paths.app.src, ['app']);
@@ -129,17 +141,5 @@ gulp.task('watch', function() {
     gulp.watch(paths.res.src, ['revRes']);
 });
 
-// gulp.task('browser-sync', function() {
-//     browserSync.init({
-//         proxy: "http://localhost:8380/"
-//     });
-
-//     gulp.watch("app/**/*.html").on('change', function(){
-//         setTimeout(function(){
-//             browserSync.reload();
-//         },1010);
-//     });
-// });
-
-gulp.task('default', ['watch']);
+gulp.task('default', ['watch','browser-sync']);
 
