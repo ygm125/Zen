@@ -12,9 +12,11 @@ var rename = require("gulp-rename");
 var del = require('del');
 var imagemin = require('gulp-imagemin');
 var browserSync = require('browser-sync').create();
+var minifyCss = require('gulp-minify-css');
 
 var exec = require( 'child_process' ).exec;
 
+const PRODUCTION = process.argv.indexOf('--pro') > -1;
 const PROXYURI = 'http://localhost:8380/';
 
 var paths = {
@@ -44,6 +46,9 @@ var paths = {
 }
 
 var ifJs = function(file){
+    if(!PRODUCTION){//开发环境不对js做压缩等处理
+        return false;
+    }
     if(/\/js\/page\//.test(file.path)){
         return false;
     }
@@ -67,14 +72,22 @@ var ifImg = function(file){
     }
 }
 
-var jsTask = lazypipe().pipe(uglify);
+var jsTask = lazypipe().pipe(sourcemaps.init)
+                       .pipe(uglify)
+                       .pipe(sourcemaps.write,'./');
 
 var jsBundleTask= lazypipe().pipe(transpile,{
     formatter: 'bundle',
     basePath : __dirname + '/src/res/'
-});//.pipe(jsTask);
+});
 
 var lessTask = lazypipe().pipe(less);
+
+//生产环境处理js、css
+if(PRODUCTION){
+    jsBundleTask = jsBundleTask.pipe(jsTask);
+    lessTask = lessTask.pipe(minifyCss);
+}
 
 function replaceManifest(src,dest){
     var manifest = gulp.src(paths.revManifest + "rev-manifest.json");
@@ -102,7 +115,7 @@ gulp.task('app', function () {
 gulp.task('res', function () {
     return gulp.src(paths.res.src)
         .pipe(gulpif(ifJsBundle,jsBundleTask()))
-        // .pipe(gulpif(ifJs,jsTask()))
+        .pipe(gulpif(ifJs,jsTask()))
         .pipe(gulpif(ifLess,lessTask()))
         .pipe(gulpif(ifImg,imagemin({optimizationLevel: 5})))
         .pipe(rename(function(path){
