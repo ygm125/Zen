@@ -7,7 +7,6 @@
 ```js
 git clone https://github.com/ygm125/Zen.git
 npm install 
-gulp init
 gulp server
 gulp start
 ```
