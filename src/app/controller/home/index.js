@@ -1,6 +1,6 @@
-import base from "./base";
+import Base from "./base";
 
-class index extends base{
+class Index extends Base{
 	
 	*index(param){
 
@@ -14,4 +14,4 @@ class index extends base{
 	}
 }
 
-export default index;
+export default Index;

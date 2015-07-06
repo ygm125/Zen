@@ -1,4 +1,4 @@
-class base{
+class Base{
 
     constructor(app,render){
         this.app = app;
@@ -21,4 +21,4 @@ class base{
 
 }
 
-export default base;
+export default Base;

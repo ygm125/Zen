@@ -37,9 +37,7 @@ if(!options.cache){
 
 ## TODO
 lazypipe的管道问题
-browserSync无刷新更新
 session缓存增加
-gulp调用改进
 
 
 
