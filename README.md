@@ -36,8 +36,8 @@ if(!options.cache){
 ```
 
 ## TODO
-lazypipe的管道问题
-session缓存增加
+- lazypipe的管道问题
+- session缓存增加
 
 
 
