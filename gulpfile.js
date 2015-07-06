@@ -13,10 +13,10 @@ var del = require('del');
 var imagemin = require('gulp-imagemin');
 var browserSync = require('browser-sync').create();
 var minifyCss = require('gulp-minify-css');
-
+var argv = require('yargs').argv;
 var exec = require( 'child_process' ).exec;
 
-const PRODUCTION = process.argv.indexOf('--pro') > -1;
+const PRODUCTION = argv.production;
 const PROXYURI = 'http://localhost:8380/';
 
 var paths = {
@@ -46,15 +46,7 @@ var paths = {
 }
 
 var ifJs = function(file){
-    if(!PRODUCTION){//开发环境不对js做压缩等处理
-        return false;
-    }
-    if(/\/js\/page\//.test(file.path)){
-        return false;
-    }
-    if(/\/js\//.test(file.path)){
-        return true;
-    }
+    return false;
 }
 var ifJsBundle = function(file){
     if(/\/js\/page\//.test(file.path)){
@@ -87,6 +79,14 @@ var lessTask = lazypipe().pipe(less);
 if(PRODUCTION){
     jsBundleTask = jsBundleTask.pipe(jsTask);
     lessTask = lessTask.pipe(minifyCss);
+    ifJs = function(file){
+        if(/\/js\/page\//.test(file.path)){
+            return false;
+        }
+        if(/\/js\//.test(file.path)){
+            return true;
+        }
+    }
 }
 
 function replaceManifest(src,dest){
@@ -158,7 +158,7 @@ gulp.task('watch', function() {
 
 gulp.task('init', ['app','view','revRes']);
 
-gulp.task('server', function(){
+gulp.task('server',['init'] ,function(){
     var handle = exec('npm start', function(err) {
         if(err) console.log(err)
     });
