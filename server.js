@@ -10,10 +10,16 @@ require( './base' );
 //应用初始化
 var fs = require( 'fs' );
 var koa = require( 'koa' );
+var session = require('koa-session');
 var staticCache = require( 'koa-static-cache' );
 var bodyParser = require( 'koa-bodyparser' );
 
 var app = koa();
+
+app.keys = [Config.secret];
+
+app.use(session(app));
+
 var route = require( './route' );
 
 app.use( staticCache( Config.res, {
