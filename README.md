@@ -6,9 +6,9 @@
 
 ```js
 git clone https://github.com/ygm125/Zen.git
-npm install 
-gulp server
-gulp start
+npm install // 安装依赖
+gulp server // 启动node服务
+gulp start  // 监听编译
 ```
 
 ## Introduction
@@ -20,20 +20,6 @@ gulp start
 - css采用less编写
 - 引用资源md5更新
 - 资源修改自动reload
-
-## Issue
-
-目标 co-views ==》co-render ==> consolidate.js
-
-缓存参数设置丢失，目前人工hack
-
-exports.swig.render增加如下判断
-
-```js
-if(!options.cache){
-  engine.setDefaults({cache:false});
-}
-```
 
 ## TODO
 - lazypipe的管道问题
