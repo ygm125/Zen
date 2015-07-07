@@ -1,22 +1,23 @@
 class Base{
 
     constructor(app,render){
-        this.app = app;
-        this.render = render;
+
+        app.render = render;
         
-        this._data = {};
-    }
+        app._data = { };
 
-    assign(key,fun){
-        if(!arguments.length){
-            return this._data;
+        app.assign = function() {
+            if(!arguments.length){
+                return this._data;
+            }
+            this._data[key] = fun;
         }
-        this._data[key] = fun;
-    }
 
-    *display(view){
-        var data = yield this.assign();
-        this.app.body = yield this.render(view,data);
+        app.display = function* (view) {
+            var data = yield this.assign();
+            this.body = yield this.render(view,data);
+        }
+
     }
 
 }

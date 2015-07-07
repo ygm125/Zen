@@ -46,7 +46,9 @@ var paths = {
 }
 
 var ifJs = function(file){
-    return false;
+    if(/\/js\//.test(file.path)){
+        return true;
+    }
 }
 var ifJsBundle = function(file){
     if(/\/js\/page\//.test(file.path)){
@@ -64,9 +66,7 @@ var ifImg = function(file){
     }
 }
 
-var jsTask = lazypipe().pipe(sourcemaps.init)
-                       .pipe(uglify)
-                       .pipe(sourcemaps.write,'./');
+var jsTask = lazypipe().pipe(babel);
 
 var jsBundleTask= lazypipe().pipe(transpile,{
     formatter: 'bundle',
@@ -77,17 +77,13 @@ var lessTask = lazypipe().pipe(less);
 
 //生产环境处理js、css
 if(PRODUCTION){
-    jsBundleTask = jsBundleTask.pipe(jsTask);
+    jsTask = jsTask.pipe(sourcemaps.init)
+                       .pipe(uglify)
+                       .pipe(sourcemaps.write,'./');
     lessTask = lessTask.pipe(minifyCss);
-    ifJs = function(file){
-        if(/\/js\/page\//.test(file.path)){
-            return false;
-        }
-        if(/\/js\//.test(file.path)){
-            return true;
-        }
-    }
 }
+
+jsBundleTask = jsBundleTask.pipe(jsTask);
 
 function replaceManifest(src,dest){
     var manifest = gulp.src(paths.revManifest + "rev-manifest.json");

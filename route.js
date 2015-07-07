@@ -66,16 +66,16 @@ function route (app) {
 		
 		try {
 			if(isFunction(ctrol.beforeAction)){
-				var beforeState = yield ctrol.beforeAction.call(ctrol,pathInfo.param);
+				var beforeState = yield ctrol.beforeAction.call(this,pathInfo.param);
 				if(!beforeState){
 					return;
 				}
 			}
 
-			yield* action.call(ctrol,pathInfo.param);
+			yield* action.call(this,pathInfo.param);
 
 			if(isFunction(ctrol.afterAction)){
-				yield ctrol.afterAction.call(ctrol,pathInfo.param);
+				yield ctrol.afterAction.call(this,pathInfo.param);
 			}
 
 		} catch (err) {
