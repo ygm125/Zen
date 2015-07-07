@@ -69,7 +69,9 @@ var ifImg = function(file){
     }
 }
 
-var jsTask = lazypipe().pipe(babel);
+var jsTask = lazypipe().pipe(babel,{
+    compact : false
+});
 
 var jsBundleTask= lazypipe().pipe(transpile,{
     formatter: 'bundle',
