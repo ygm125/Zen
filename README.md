@@ -20,7 +20,6 @@ gulp start  // 监听编译
 
 ## TODO
 - lazypipe的管道问题
-- session缓存增加
 
 ## License
 MIT
