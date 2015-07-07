@@ -46,7 +46,7 @@ var paths = {
 }
 
 var ifJs = function(file){
-    if(ifJsBundle()){
+    if(ifJsBundle(file)){
         return false;
     }
     if(/\/js\//.test(file.path)){
