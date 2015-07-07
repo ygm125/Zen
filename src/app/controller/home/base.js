@@ -3,10 +3,10 @@ class Base{
     constructor(app,render){
 
         app.render = render;
-        
+
         app._data = { };
 
-        app.assign = function() {
+        app.assign = function(key,fun) {
             if(!arguments.length){
                 return this._data;
             }
