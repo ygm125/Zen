@@ -8,7 +8,7 @@ git clone https://github.com/ygm125/Zen.git
 npm install // 安装依赖
 gulp server // 启动node服务
 gulp dev  // 开发环境监听编译
-gulp build // 执行编译
+gulp deploy // 编译并部署
 ```
 ## Introduction
 - src为需要编译的源码目录

@@ -183,13 +183,13 @@ gulp.task('revCss', function () {
     return replaceManifest(src, dest);
 });
 
-gulp.task('buildApp', function () {
+gulp.task('buildApp',['clean'], function () {
     return gulp.src(paths.app.src)
         .pipe(notViewPipe())
         .pipe(gulp.dest(getBuildPath(paths.app.build)));
 });
 
-gulp.task('buildRes', function () {
+gulp.task('buildRes',['clean'], function () {
     return gulp.src(paths.res.src)
         .pipe(gulpif(isPath('jsbundle'),buildJsBundleTask()))
         .pipe(gulpif(isPath('js'),buildJsTask()))
@@ -214,7 +214,13 @@ gulp.task('build',['buildRes','buildApp'], function() {
 });
 
 gulp.task('deploy', ['build'],function(){
+    var handle = exec('sh release.sh', function(err) {
+        if (err) console.log(err)
+    });
 
+    handle.stdout.on('data', function(data) {
+        console.log(data);
+    });
 });
 
 
