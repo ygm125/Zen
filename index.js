@@ -22,5 +22,5 @@ cluster.on( 'exit', function( worker ) {
     cluster.fork();
 } );
 
-// var pidFile = './app.pid';
-// fs.writeFileSync(pidFile, process.pid);
+var pidFile = './app.pid';
+fs.writeFileSync(pidFile, process.pid);
