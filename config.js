@@ -1,5 +1,5 @@
 global.Config = {
-    port : 8888,
+    port : 5555,
     maxAge : APP_DEBUG ? 0 : 365 * 24 * 60 * 60,
     secret : 'zen',
     watchFiles : APP_DEBUG ? 1000 : 0,
