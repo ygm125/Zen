@@ -16,7 +16,7 @@ var minifyCss = require('gulp-minify-css');
 
 var exec = require('child_process').exec;
 
-const PROXYURI = 'http://localhost:8380/';
+const PROXYURI = 'http://localhost:5555/';
 const BUILDPATH = './.build/www/';
 
 var paths = {
@@ -46,7 +46,7 @@ var paths = {
         buildSrc: 'res/css/**',
         build: 'res/css'
     },
-    watchReload: ['app/**/*.html', 'res/js/**', 'res/css/**'],
+    watchReload: ['app/view/**', 'res/js/**', 'res/css/**'],
 }
 
 var rpath = {

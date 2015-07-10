@@ -13,14 +13,16 @@ var koa = require( 'koa' );
 var session = require('koa-session');
 var staticCache = require( 'koa-static-cache' );
 var bodyParser = require( 'koa-bodyparser' );
+var favicon = require('koa-favicon');
 
 var app = koa();
+var route = require( './route' );
 
 app.keys = [Config.secret];
 
 app.use(session(app));
 
-var route = require( './route' );
+app.use(favicon(Config.res + '/img/favicon.ico'));
 
 app.use( staticCache( Config.res, {
     maxAge: Config.maxAge,
