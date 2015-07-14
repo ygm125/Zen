@@ -117,8 +117,6 @@ gulp.task('img', function() {
         .pipe(gulp.dest(paths.img.build));
 });
 
-gulp.task('res', ['js', 'less','img']);
-
 gulp.task('browser-sync', function() {
     browserSync.init({
         proxy: PROXYURI
@@ -134,9 +132,13 @@ gulp.task('watch', function() {
     gulp.watch(paths.res.src, ['res']);
 });
 
+gulp.task('res', ['js', 'less','img']);
+
+gulp.task('init',['app','res']);
+
 gulp.task('dev', ['watch', 'browser-sync']);
 
-gulp.task('server', ['app', 'res'], function(cb) {
+gulp.task('server', function(cb) {
     var handle = exec('npm start', function(err) {
         if (err) console.log(err)
     });
