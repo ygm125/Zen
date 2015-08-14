@@ -13,6 +13,8 @@ var del = require('del');
 var imagemin = require('gulp-imagemin');
 var browserSync = require('browser-sync').create();
 var minifyCss = require('gulp-minify-css');
+// var browserify = require('gulp-browserify');
+var moduleBundle = require('gulp-module-bundle');
 
 var exec = require('child_process').exec;
 
@@ -87,12 +89,13 @@ var isPath = function(path) {
 // ========================================
 // 开发环境相关==============================
 
-var jsBundleTask = lazypipe().pipe(transpile,{
-    formatter: 'bundle',
-    basePath: __dirname + '/src/res/js'
-}).pipe(babel,{
-    "blacklist": ["regenerator"]
-});
+
+// var jsBundleTask = lazypipe().pipe(transpile,{
+//     formatter: 'bundle',
+//     basePath: __dirname + '/src/res/js'
+// }).pipe(babel,{
+//     "blacklist": ["regenerator"]
+// });
 
 gulp.task('app', function() {
     return gulp.src(paths.app.src)
@@ -102,7 +105,7 @@ gulp.task('app', function() {
 
 gulp.task('js', function() {
     return gulp.src(paths.js.src)
-        .pipe(gulpif(isPath('jsbundle'),jsBundleTask()))
+        .pipe(gulpif(isPath('jsbundle'),moduleBundle()))
         .pipe(gulp.dest(paths.js.build));
 });
 
@@ -153,12 +156,7 @@ gulp.task('server', function(cb) {
 
 var buildJsTask = lazypipe().pipe(sourcemaps.init).pipe(uglify).pipe(sourcemaps.write,'./');
 
-var buildJsBundleTask = lazypipe().pipe(transpile,{
-    formatter: 'bundle',
-    basePath: __dirname + '/src/res'
-}).pipe(babel,{
-    "blacklist": ["regenerator"]
-}).pipe(buildJsTask);
+var buildJsBundleTask = lazypipe().pipe(moduleBundle).pipe(buildJsTask);
 
 var buildLessTask = lazypipe().pipe(less).pipe(minifyCss);
 
