@@ -2,7 +2,6 @@ var gulp = require('gulp');
 var babel = require('gulp-babel');
 var gulpif = require('gulp-if');
 var sourcemaps = require('gulp-sourcemaps');
-var transpile = require('gulp-es6-module-transpiler');
 var uglify = require('gulp-uglify');
 var rev = require('gulp-rev');
 var revReplace = require("gulp-rev-replace");
@@ -13,12 +12,11 @@ var del = require('del');
 var imagemin = require('gulp-imagemin');
 var browserSync = require('browser-sync').create();
 var minifyCss = require('gulp-minify-css');
-// var browserify = require('gulp-browserify');
 var moduleBundle = require('gulp-module-bundle');
 
 var exec = require('child_process').exec;
 
-const PROXYURI = 'http://localhost:5555/';
+const PROXYURI = 'http://localhost:8089/';
 const BUILDPATH = './.build/www/';
 
 var paths = {
@@ -88,14 +86,6 @@ var isPath = function(path) {
 
 // ========================================
 // 开发环境相关==============================
-
-
-// var jsBundleTask = lazypipe().pipe(transpile,{
-//     formatter: 'bundle',
-//     basePath: __dirname + '/src/res/js'
-// }).pipe(babel,{
-//     "blacklist": ["regenerator"]
-// });
 
 gulp.task('app', function() {
     return gulp.src(paths.app.src)
