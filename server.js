@@ -22,7 +22,7 @@ app.keys = [Config.secret];
 
 app.use(session(app));
 
-app.use(favicon(Config.res + '/img/favicon.ico'));
+app.use(favicon(Config.favicon));
 
 app.use( staticCache( Config.res, {
     maxAge: Config.maxAge,
