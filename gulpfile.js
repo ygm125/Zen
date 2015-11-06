@@ -67,8 +67,7 @@ var notViewPipe = function() {
             return true;
         }
     }, babel({
-        "blacklist": ["regenerator"],
-        "optional": ["runtime"]
+        "blacklist": ["regenerator"]
     }));
 }
 
