@@ -29,7 +29,7 @@
     "lazypipe": "^0.2.4"
   },
   "scripts": {
-    "start": "node --harmony index.js"
+    "start": "node index.js"
   },
   "engines": {
     "node": ">= 0.11.13"

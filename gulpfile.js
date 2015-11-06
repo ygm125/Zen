@@ -212,5 +212,9 @@ gulp.task('deploy', ['build'],function(){
     });
 });
 
+process.on('uncaughtException', function (err) {
+  console.log(err);
+});
+
 
 

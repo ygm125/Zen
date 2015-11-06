@@ -1,7 +1,7 @@
 #!/bin/sh
 
 DIR=`pwd`
-host='root@192.168.190.31'
+host='root@172.17.30.21'
 dstpath='/usr/local/zen'
 buildpath='./.build/www'
 
